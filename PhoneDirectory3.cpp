@@ -1,20 +1,33 @@
 # PhoneDirectory
-// =============================================================
+// ====================================================================================================
 //PROJECT NAME          :PHONE BOOK USING DOUBLY LINK LIST
 // PROGRAMMING LANGUAGE :C++   (supporst oop concept)
 // DATA STRUCTURE USED  :DOUBLY LINK LIST(A doubly-linked list is particularly nice because you can iterate and search from the front (head) of the end of the list or the back (tail))
 // DEVELOPER            :PRANJALI BHAUSAHEB SATHE
 // AIM                  :TO MANAGE CONTACT LIST AND ALSO PERFORM DIFFERENT OPERATIONS (SEARCHING,SORTIONG)
 // STARTING DATE        :01/06/2022
-// =============================================================
-// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// =============================================================
-// =============================================================
+// FUNCTIONS USED       :    void insert();
+// void accept();                :IT ACCEPTS THE DATA (NAME ,PHONE NUMBER,EMAIL,PLACE) FROM USER
+// void display();               :IT DISPLAYS CONTACT DETAILS
+// void display(char n[]);       :IT DISPLAYS CONTACT DETAILS
+// void update(char n[]);        :IT UPDATES CONTACT DETAILS TAKES NAME AS A PARAMETER RETURNS NOTHING
+// void deleteContact(char n[]); :DELETES CONTACT DETAILS
+// void searchContact(char n[]); :IT SEARCHES CONTACT DETAIL USING NAME AS A PARAMETER
+// void deleteSameName();        :IT DELETES CONTACT DETAIL WHICH ARE SAME NAME
+// void deleteSameNumber();      :IT DELETES CONTACT DETAIL WHICH ARE SAME NUMBER
+// void deleteSameEmail();       :IT DELETES CONTACT DETAIL WHICH ARE SAME EMAIL
+// void searchbyEmail(char n[]); :IT SEARCHES CONTACT DETAIL USING EMAIL AS A PARAMETER
+// void searchbyNumber(char n[]);:IT SEARCHES CONTACT DETAIL USING NUMBER AS A PARAMETER
+// void searchbyName(char n[]);  :IT SEARCHES CONTACT DETAIL USING NAME AS A PARAMETER
+// ===================================================================================================
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// ===================================================================================================
+// ===================================================================================================
 #include <iostream>
 #include <cstring>
 #include <iomanip>
 using namespace std;
-// =============================================================
+// ==================================================================================================
 class node
 {
 public:
@@ -45,6 +58,7 @@ class nodelist
 public:
     node *preven;
     // -------------------------
+    // ========== FUNCTIONS ====
     void insert();
     void accept();
     void display();
@@ -58,7 +72,6 @@ public:
     void searchbyEmail(char n[]);
     void searchbyNumber(char n[]);
     void searchbyName(char n[]);
-
 
     // -------------------------
     nodelist()
@@ -118,7 +131,7 @@ void nodelist::accept()
         cin >> choice;
     } while (choice == 'y' || choice == 'Y');
 }
-
+// ===================================================================================================
 // -----------------DISPLAY-----------------------------
 void nodelist::display()
 {
@@ -139,40 +152,39 @@ void nodelist::display()
 void nodelist::display(char name[50])
 {
     ptr = head;
-    int cnt=0;
-    int cnt2=0;
-    if(ptr==NULL)
+    int cnt = 0;
+    int cnt2 = 0;
+    if (ptr == NULL)
     {
-        cout<<"CONTACT LIST IS EMPTY\n";
+        cout << "CONTACT LIST IS EMPTY\n";
     }
-    else if(ptr!=NULL)
+    else if (ptr != NULL)
     {
         cout << setw(30) << "______________________________________________________________________" << endl;
-    cout << setw(25) << "NAME" << setw(18) << "PLACE" << setw(18) << "PHONE NUMBER" << setw(25) << "EMAIL" << endl;
-    cout << "\t\t\t___________________________________________________________" << endl;
+        cout << setw(25) << "NAME" << setw(18) << "PLACE" << setw(18) << "PHONE NUMBER" << setw(25) << "EMAIL" << endl;
+        cout << "\t\t\t___________________________________________________________" << endl;
 
-    while (ptr != NULL)
+        while (ptr != NULL)
+        {
+            if (strcmp(name, ptr->name) == 0)
+            {
+                cout << setw(25) << ptr->name << setw(22) << ptr->place << setw(22) << ptr->phoneNo << setw(22) << ptr->emailAdd << endl;
+                cnt2++;
+            }
+            else if (strcmp(name, ptr->name) != 0)
+            {
+                cnt = 2;
+            }
+
+            ptr = ptr->next;
+        }
+
+        cout << "\t\t\t___________________________________________________________" << endl;
+    }
+    if (cnt == 2 && cnt2 == 0)
     {
-     if(strcmp(name,ptr->name)==0)
-     {
-            cout << setw(25) << ptr->name << setw(22) << ptr->place << setw(22) << ptr->phoneNo << setw(22) << ptr->emailAdd << endl;
-            cnt2++;
-     }
-     else if(strcmp(name,ptr->name)!=0)
-     {
-         cnt=2;
-     }
-
-        ptr = ptr->next;
+        cout << setw(30) << "\tCONTCT WITH NAME (" << name << ") DIDNT EXIST IN PHONE DIRECTORY:\n";
     }
-   
-    cout << "\t\t\t___________________________________________________________" << endl;
-    }
-     if(cnt==2 && cnt2==0)
-    {
-        cout<<setw(30)<<"\tCONTCT WITH NAME ("<<name<<") DIDNT EXIST IN PHONE DIRECTORY:\n";
-    }
-
 }
 // ----------------INSERT--------------------------------------
 void nodelist::insert()
@@ -298,135 +310,141 @@ void nodelist::deleteContact(char name[50])
 }
 // ---------------DELETE SAME NAME IN PHONEBOOK-----------------------------------
 void nodelist::deleteSameName()
+{
+    ptr1 = head;
+    while (ptr1 != NULL && ptr1->next != NULL)
     {
-        ptr1=head;
-        while (ptr1 != NULL && ptr1->next != NULL) 
-    { 
-        ptr2 = ptr1; 
-        while (ptr2->next != NULL) 
-        { 
-            if (strcmp(ptr1->name,ptr2->next->name)==0)
-            { 
-                dup = ptr2->next; 
-                ptr2->next = ptr2->next->next; 
-                delete(dup); 
-            } 
+        ptr2 = ptr1;
+        while (ptr2->next != NULL)
+        {
+            if (strcmp(ptr1->name, ptr2->next->name) == 0)
+            {
+                dup = ptr2->next;
+                ptr2->next = ptr2->next->next;
+                delete (dup);
+            }
             else
             {
-                ptr2 = ptr2->next; 
+                ptr2 = ptr2->next;
+            }
         }
-        }
-        ptr1 = ptr1->next; 
+        ptr1 = ptr1->next;
     }
-    }
+}
 // ---------------DELETE SAME EMAIL IN PHONE BOOK---------------------------------
- void nodelist::deleteSameEmail()
+void nodelist::deleteSameEmail()
+{
+    ptr1 = head;
+    while (ptr1 != NULL && ptr1->next != NULL)
     {
-        ptr1=head;
-        while (ptr1 != NULL && ptr1->next != NULL) 
-    { 
-        ptr2 = ptr1; 
-        while (ptr2->next != NULL) 
-        { 
-            if (strcmp(ptr1->emailAdd,ptr2->next->emailAdd)==0)
-            { 
-                dup = ptr2->next; 
-                ptr2->next = ptr2->next->next; 
-                delete(dup); 
-            } 
+        ptr2 = ptr1;
+        while (ptr2->next != NULL)
+        {
+            if (strcmp(ptr1->emailAdd, ptr2->next->emailAdd) == 0)
+            {
+                dup = ptr2->next;
+                ptr2->next = ptr2->next->next;
+                delete (dup);
+            }
             else
             {
-                ptr2 = ptr2->next; 
+                ptr2 = ptr2->next;
+            }
         }
-        }
-        ptr1 = ptr1->next; 
-    } 
+        ptr1 = ptr1->next;
     }
-    // ---------------DELETE SAME NUMBER IN PHONE BOOK---------------------------------
-    void nodelist::deleteSameNumber()
+}
+// ---------------DELETE SAME NUMBER IN PHONE BOOK---------------------------------
+void nodelist::deleteSameNumber()
+{
+    ptr1 = head;
+    while (ptr1 != NULL && ptr1->next != NULL)
     {
-     ptr1=head;
-        while (ptr1 != NULL && ptr1->next != NULL) 
-    { 
-        ptr2 = ptr1; 
-        while (ptr2->next != NULL) 
-        { 
-            if (strcmp(ptr1->phoneNo,ptr2->phoneNo)==0)
-            { 
-                dup = ptr2->next; 
-                ptr2->next = ptr2->next->next; 
-                delete(dup); 
-            } 
+        ptr2 = ptr1;
+        while (ptr2->next != NULL)
+        {
+            if (strcmp(ptr1->phoneNo, ptr2->phoneNo) == 0)
+            {
+                dup = ptr2->next;
+                ptr2->next = ptr2->next->next;
+                delete (dup);
+            }
             else
             {
-                ptr2 = ptr2->next; 
+                ptr2 = ptr2->next;
+            }
         }
-        }
-        ptr1 = ptr1->next; 
-    }    
+        ptr1 = ptr1->next;
     }
+}
 // ---------------SEARCH CONTACT---------------------------------------------------
 // ---------------search using name------------------------------------------------
- void nodelist::searchbyName(char name[10])
+void nodelist::searchbyName(char name[10])
+{
+    ptr = head;
+    while (ptr != NULL)
     {
-        ptr=head;
-        while(ptr!=NULL)
+        if (strcmp(name, ptr->name) == 0)
         {
-            if(strcmp(name,ptr->name)==0)
-            {
-                cout<< setw(30)<<"NAME FOUND"<<endl;
-                cout<< setw(30)<<"CONTACT DETAILS ARE BELOW:\n"<<endl;
-        	    cout << "\t\t___________________________________________________________________________" << endl;
-                cout << setw(25) << "NAME" << setw(20) << "PLACE" << setw(20) << "PHONE NUMBER" << setw(25) << "EMAIL" << endl;
-                cout << "\t\t_______________________________________________________________________________________" << endl;
-		        cout << setw(25) << ptr->name << setw(20) << ptr->place << setw(20) << ptr->phoneNo << setw(25) << ptr->emailAdd << endl;
-            }
-            ptr=ptr->next;
+            cout << setw(30) << "NAME FOUND" << endl;
+            cout << setw(30) << "CONTACT DETAILS ARE BELOW:\n"
+                 << endl;
+            cout << "\t\t___________________________________________________________________________" << endl;
+            cout << setw(25) << "NAME" << setw(20) << "PLACE" << setw(20) << "PHONE NUMBER" << setw(25) << "EMAIL" << endl;
+            cout << "\t\t_______________________________________________________________________________________" << endl;
+            cout << setw(25) << ptr->name << setw(20) << ptr->place << setw(20) << ptr->phoneNo << setw(25) << ptr->emailAdd << endl;
         }
+        ptr = ptr->next;
     }
-    void nodelist::searchbyNumber(char num[20])
+}
+// -------------search by using number ----------------------------------------------------------------------------
+void nodelist::searchbyNumber(char num[20])
+{
+    ptr = head;
+    while (ptr != NULL)
     {
-     ptr=head;
-        while(ptr!=NULL)
+        if (strcmp(num, ptr->phoneNo) == 0)
         {
-            if(strcmp(num,ptr->phoneNo)==0)
-            {
-               
-            	cout<< setw(30)<<"NUMBER FOUND"<<endl;
-                cout<< setw(30)<<"CONTACT DETAILS ARE BELOW:\n"<<endl;
-        	    cout << "\t\t___________________________________________________________________________" << endl;
-                cout << setw(25) << "NAME" << setw(20) << "PLACE" << setw(20) << "PHONE NUMBER" << setw(25) << "EMAIL" << endl;
-                cout << "\t\t_______________________________________________________________________________________" << endl;
-		        cout << setw(25) << ptr->name << setw(20) << ptr->place << setw(20) << ptr->phoneNo << setw(25) << ptr->emailAdd << endl;
-            }
-            ptr=ptr->next;
-        }   
-    }
-    void nodelist::searchbyEmail(char email[20])
-    {
-        ptr=head;
-        while(ptr!=NULL)
-        {
-            if(strcmp(email,ptr->emailAdd)==0)
-            {
-              cout<< setw(30)<<"EMAIL ADDRESS FOUND"<<endl;
-                cout<< setw(30)<<"CONTACT DETAILS ARE BELOW:\n"<<endl;
-        	    cout << "\t\t___________________________________________________________________________" << endl;
-                cout << setw(25) << "NAME" << setw(20) << "PLACE" << setw(20) << "PHONE NUMBER" << setw(25) << "EMAIL" << endl;
-                cout << "\t\t_______________________________________________________________________________________" << endl;
-		        cout << setw(25) << ptr->name << setw(20) << ptr->place << setw(20) << ptr->phoneNo << setw(25) << ptr->emailAdd << endl;
-            }
-            ptr=ptr->next;
+
+            cout << setw(30) << "NUMBER FOUND" << endl;
+            cout << setw(30) << "CONTACT DETAILS ARE BELOW:\n"
+                 << endl;
+            cout << "\t\t___________________________________________________________________________" << endl;
+            cout << setw(25) << "NAME" << setw(20) << "PLACE" << setw(20) << "PHONE NUMBER" << setw(25) << "EMAIL" << endl;
+            cout << "\t\t_______________________________________________________________________________________" << endl;
+            cout << setw(25) << ptr->name << setw(20) << ptr->place << setw(20) << ptr->phoneNo << setw(25) << ptr->emailAdd << endl;
         }
+        ptr = ptr->next;
     }
-// =============================================================
+}
+// ---------------------search by using email id ---------------------------------------------------------------------
+void nodelist::searchbyEmail(char email[20])
+{
+    ptr = head;
+    while (ptr != NULL)
+    {
+        if (strcmp(email, ptr->emailAdd) == 0)
+        {
+            cout << setw(30) << "EMAIL ADDRESS FOUND" << endl;
+            cout << setw(30) << "CONTACT DETAILS ARE BELOW:\n"
+                 << endl;
+            cout << "\t\t___________________________________________________________________________" << endl;
+            cout << setw(25) << "NAME" << setw(20) << "PLACE" << setw(20) << "PHONE NUMBER" << setw(25) << "EMAIL" << endl;
+            cout << "\t\t_______________________________________________________________________________________" << endl;
+            cout << setw(25) << ptr->name << setw(20) << ptr->place << setw(20) << ptr->phoneNo << setw(25) << ptr->emailAdd << endl;
+        }
+        ptr = ptr->next;
+    }
+}
+// ==================MAIN FUNCTION ====================================================================
+// =====================================================================================================
 int main()
 {
     nodelist contact;
     int choice = 0;
     do
     {
-        cout<<"\n=====================================================================================================\n";
+        cout << "\n=====================================================================================================\n";
         cout << "                         ENETR THE NUMBER OF OPERATION YOU WANT TO PERFORM\n\n";
         cout << "\t\t\t|==================================================|\n";
         cout << "\t\t\t|\t           PHONE BOOK                      |\n";
@@ -442,7 +460,7 @@ int main()
         cout << "\t\t\t|==================================================|\n";
 
         // cout<<"1.DISPLAY PHONE BOOK\n2.INSERT NEW CONTACT\n3.UPDATE DETAILS ON EXISTING CONTACT\n4.DELETE CONTACT\n5.DELETE SAME NAME IN PHONEBOOK\n6.DELETE SAME NAME IN PHONEBOOK\n7.SEARCH\n10.EXIT\n"<<endl;
-        cin  >>choice;
+        cin >> choice;
         // ----------------------
         switch (choice)
         {
@@ -473,69 +491,71 @@ int main()
             break;
         }
         case 5:
-        {   
+        {
             contact.deleteSameName();
             break;
         }
         case 7:
         {
-             char ch;
-             do{
-                  
-                    cout<<"\n=====================================================================================================\n";
-                    cout << "                         ENETR THE NUMBER OF OPERATION YOU WANT TO PERFORM\n\n";
-                    cout << "\t\t\t|==================================================|\n";
-                    cout << "\t\t\t|\t           SEARCHING METHOD                |\n";
-                    cout << "\t\t\t|==================================================|\n";
-                    cout << "\t\t\t|\t1].SEARCH BY USING NAME                    |\n";
-                    cout << "\t\t\t|\t2].SEARCH BY USING EMAIL ADDRESS           |\n";
-                    cout << "\t\t\t|\t3].SEARCH BY USING NUMBER                  |\n";
-                    cout << "\t\t\t|\t4].EXIT                                    |\n";
-                    cout << "\t\t\t|==================================================|\n";
-                    cin>>ch;
-                    switch(ch)
+            char ch;
+            do
+            {
+
+                cout << "\n=====================================================================================================\n";
+                cout << "                         ENETR THE NUMBER OF OPERATION YOU WANT TO PERFORM\n\n";
+                cout << "\t\t\t|==================================================|\n";
+                cout << "\t\t\t|\t           SEARCHING METHOD                |\n";
+                cout << "\t\t\t|==================================================|\n";
+                cout << "\t\t\t|\t1].SEARCH BY USING NAME                    |\n";
+                cout << "\t\t\t|\t2].SEARCH BY USING EMAIL ADDRESS           |\n";
+                cout << "\t\t\t|\t3].SEARCH BY USING NUMBER                  |\n";
+                cout << "\t\t\t|\t4].EXIT                                    |\n";
+                cout << "\t\t\t|==================================================|\n";
+                cin >> ch;
+                switch (ch)
+                {
+                case '1':
+                {
+                    char name[50];
+                    cout << "\t\tENTER CONTACT NAME YOU WANT TO UPDATE:\n";
+                    cin >> name;
+                    contact.searchbyName(name);
+                    break;
+                }
+                case '2':
+                {
+                    char emailAdd[50];
+                    cout << "\t\tENTER CONTACT EMAIL YOU WANT TO UPDATE:\n";
+                    cin >> emailAdd;
+                    contact.searchbyEmail(emailAdd);
+                    break;
+                }
+                case '3':
+                {
+                    char phoneNo[50];
+                    do
                     {
-                        case '1':
-                        {
-                              char name[50];
-                              cout << "\t\tENTER CONTACT NAME YOU WANT TO UPDATE:\n";
-                              cin >> name;
-                              contact.searchbyName(name);
-                            break;
-                        }
-                        case '2':
-                        {
-                            char emailAdd[50];
-                              cout << "\t\tENTER CONTACT EMAIL YOU WANT TO UPDATE:\n";
-                              cin >> emailAdd;
-                              contact.searchbyEmail(emailAdd);
-                            break;
-                        }
-                        case '3':
-                        {
-                            char phoneNo[50];
-                              do{
-                                  cout << "\t\tENTER VALID CONTACT NUMBER YOU WANT TO UPDATE:\n";
-                              cin >> phoneNo;
-                              }while(strlen(phoneNo)!=10);
-                              contact.searchbyNumber(phoneNo);
-                            break;
-                        }
-                        case '4':
-                        {
-                            cout<<"thank you!"<<endl;
-                            break;
-                        }
-                    }
-             }while(ch!='4');
+                        cout << "\t\tENTER VALID CONTACT NUMBER YOU WANT TO UPDATE:\n";
+                        cin >> phoneNo;
+                    } while (strlen(phoneNo) != 10);
+                    contact.searchbyNumber(phoneNo);
+                    break;
+                }
+                case '4':
+                {
+                    cout << "thank you!" << endl;
+                    break;
+                }
+                }
+            } while (ch != '4');
             break;
         }
         case 8:
-        {
-            printf("\n\t\t\tTHANK YOU !");
+        {   printf("\n\t\t\tTHANK YOU !");
             break;
         }
         }
     } while (choice != 10);
     return 0;
 }
+// =====================================================================================================
